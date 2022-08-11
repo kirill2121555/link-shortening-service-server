@@ -14,7 +14,9 @@ class Controller {
             }
             const newlink = process.env.HOST + shortlink
             await db.create({originallink:link, castomlink:shortlink,  number_of_visits:0, datecreate:new Date, datelastuse:new Date})
-            return res.status(200).json(newlink)
+  return res.redirect('https://www.google.com/webhp?authuser=1')
+
+//            return res.status(200).json(newlink)
         } catch (error) {
             return res.status(400).json('Failed to create link')
         }
@@ -59,7 +61,7 @@ class Controller {
             const linkk = link.replace(process.env.HOST, '')
            // const cortege = await db.query(`SELECT number_of_visits, datecreate, datelastuse FROM link WHERE castomlink = $1`, [linkk])
            const cortege = await db.find({castomlink:linkk})
-            if (!cortege) {
+            if (cortege) {
                 return res.status(200).json('link not found')
             }
             return res.status(200).json(cortege)
