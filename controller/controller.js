@@ -62,6 +62,9 @@ class Controller {
         }
     }
     
+    async statistics(req, res) {
+       res.json('kkkkk')
+        }
 }
 module.exports = new Controller()
 
