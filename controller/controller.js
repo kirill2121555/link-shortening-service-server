@@ -20,7 +20,8 @@ class Controller {
 
     async redirect(req, res) {
         try {
-            const link = req.params['linkk']
+            //const link = req.params['linkk']
+            const link =req.query.link
             const cortege = await db.findOne({ castomlink: link })
             console.log(cortege)
             await db.updateOne({ _id: cortege._id }, { number_of_visits: Number(cortege.number_of_visits) + 1, datelastuse: new Date })
