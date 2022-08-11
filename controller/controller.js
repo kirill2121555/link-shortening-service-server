@@ -59,7 +59,7 @@ class Controller {
             const linkk = link.replace(process.env.HOST, '')
            // const cortege = await db.query(`SELECT number_of_visits, datecreate, datelastuse FROM link WHERE castomlink = $1`, [linkk])
            const cortege = await db.find({castomlink:linkk})
-            if (cortege.rows.length === 0) {
+            if (!cortege) {
                 return res.status(200).json('link not found')
             }
             return res.status(200).json(cortege)
