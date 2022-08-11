@@ -6,6 +6,7 @@ class Controller {
     async createlink(req, res) {
         try {
             const { link } = req.body
+            console.log('createlink')
             const shortlink = uuidv4()
             while (true) {
                 const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [shortlink])
