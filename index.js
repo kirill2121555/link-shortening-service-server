@@ -2,9 +2,10 @@ const express=require('express')
 const router=require('./router/router')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const { config } = require('dotenv')
 require('dotenv').config()
 
-const PORT=5000
+const PORT=process.env.PORT||config.get('wserverPort')
 
 const app=express()
 app.use(express.json())
