@@ -27,7 +27,8 @@ class Controller {
             //const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [link])
             await db.updateOne({_id:cortege._id},{number_of_visits:Number(cortege.rows[0].number_of_visits)+1, datelastuse:new Date})
            // await db.query(`UPDATE link SET number_of_visits=$1, datelastuse=$2 WHERE id= $3`, [Number(cortege.rows[0].number_of_visits) + 1, new Date, cortege.rows[0].id])
-            return res.redirect(cortege.originallink)
+            return res.json(cortege.originallink)
+            //redirect(cortege.originallink)
         } catch (e) {
             return res.status(400).json('Error')
         }
@@ -36,9 +37,11 @@ class Controller {
     async createcastomlink(req, res) {
         try {
             const { link, textlink } = req.body
-            const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [textlink])
-            if (cortege.rows.length === 0) {
-                await db.query(`INSERT INTO link (originallink, castomlink,  number_of_visits, datecreate, datelastuse) values($1,$2,$3,$4,$5) RETURNING *`, [link, textlink, 0, new Date, new Date])
+            const cortege = await db.findOne({castomlink:textlink})
+            //const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [textlink])
+            if (!cortege) {
+              //  await db.query(`INSERT INTO link (originallink, castomlink,  number_of_visits, datecreate, datelastuse) values($1,$2,$3,$4,$5) RETURNING *`, [link, textlink, 0, new Date, new Date])
+                await db.create({originallink: link, castomlink:textlink , number_of_visits: 0 ,datecreate: new Date,datelastuse: new Date, })
                 return res.status(200).json(process.env.HOST + textlink)
             }
             else {
@@ -54,11 +57,12 @@ class Controller {
         try {
             const { link } = req.body
             const linkk = link.replace(process.env.HOST, '')
-            const cortege = await db.query(`SELECT number_of_visits, datecreate, datelastuse FROM link WHERE castomlink = $1`, [linkk])
+           // const cortege = await db.query(`SELECT number_of_visits, datecreate, datelastuse FROM link WHERE castomlink = $1`, [linkk])
+           const cortege = await db.find({castomlink:linkk})
             if (cortege.rows.length === 0) {
                 return res.status(200).json('link not found')
             }
-            return res.status(200).json(cortege.rows[0])
+            return res.status(200).json(cortege)
         } catch (e) {
             return res.status(400).json('Error')
         }
