@@ -62,7 +62,7 @@ class Controller {
         }
     }
     
-    async statistics(req, res) {
+    async s(req, res) {
        res.json('kkkkk')
         }
 }
