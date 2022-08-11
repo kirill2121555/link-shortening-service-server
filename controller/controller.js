@@ -1,20 +1,19 @@
 const db = require('../db/db')
 const { v4: uuidv4 } = require('uuid')
-
 class Controller {
 
     async createlink(req, res) {
         try {
             const { link } = req.body
             console.log('createlink')
-            return res.json('jgfh:sdfs')
+           // return res.json('jgfh:sdfs')
             const shortlink = uuidv4()
             while (true) {
-                const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [shortlink])
-                if (cortege.rows.length === 0) break;
+                const cortege = await db.findOne({castomlink:shortlink})
+                if (cortege===0) break;
             }
             const newlink = process.env.HOST + shortlink
-            await db.query(`INSERT INTO link (originallink, castomlink,  number_of_visits, datecreate, datelastuse) values($1,$2,$3,$4,$5) RETURNING *`, [link, shortlink, 0, new Date, new Date])
+            await db.create({originallink:link, castomlink:shortlink,  number_of_visits:0, datecreate:new Date, datelastuse:new Date})
             return res.status(200).json(newlink)
         } catch (error) {
             return res.status(400).json('Failed to create link')
@@ -24,9 +23,11 @@ class Controller {
     async redirect(req, res) {
         try {
             const link = req.params.link
-            const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [link])
-            await db.query(`UPDATE link SET number_of_visits=$1, datelastuse=$2 WHERE id= $3`, [Number(cortege.rows[0].number_of_visits) + 1, new Date, cortege.rows[0].id])
-            return res.redirect(cortege.rows[0].originallink)
+            const cortege=await db.findOne({castomlink:link})
+            //const cortege = await db.query(`SELECT * FROM link WHERE castomlink = $1`, [link])
+            await db.updateOne({_id:cortege._id},{number_of_visits:Number(cortege.rows[0].number_of_visits)+1, datelastuse:new Date})
+           // await db.query(`UPDATE link SET number_of_visits=$1, datelastuse=$2 WHERE id= $3`, [Number(cortege.rows[0].number_of_visits) + 1, new Date, cortege.rows[0].id])
+            return res.redirect(cortege.originallink)
         } catch (e) {
             return res.status(400).json('Error')
         }
