@@ -1,0 +1,6 @@
+CREATE TABLE link(
+	id SERIAL PRIMARY KEY,
+	originallink VARCHAR(255),
+	castomlink VARCHAR(255),
+    number_of_visits bigint
+);
