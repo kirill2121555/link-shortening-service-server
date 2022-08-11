@@ -6,11 +6,11 @@ class Controller {
         try {
             const { link } = req.body
             console.log('createlink')
-            return res.json('jgfh:sdfs')
+            //return res.json('jgfh:sdfs')
             const shortlink = uuidv4()
             while (true) {
                 const cortege = await db.findOne({castomlink:shortlink})
-                if (cortege===0) break;
+                if (!cortege) break;
             }
             const newlink = process.env.HOST + shortlink
             await db.create({originallink:link, castomlink:shortlink,  number_of_visits:0, datecreate:new Date, datelastuse:new Date})
