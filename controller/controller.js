@@ -45,7 +45,7 @@ class Controller {
             const { link, textlink } = req.body
             const cortege = await db.findOne({ castomlink: textlink })
             if (cortege) {
-                return res.status(200).json('Enter another text')
+                return res.status(200).json('Enter another text',[])
             }
             else {
                 await db.create({ originallink: link, castomlink: textlink, number_of_visits: 0, datecreate: new Date, datelastuse: new Date, })
