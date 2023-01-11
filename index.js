@@ -17,6 +17,7 @@ app.use('/',router)
  
 const start = async () => {
     try {
+        console.log('sadas')
         await mongoose.connect('mongodb+srv://dsfecfrreferg:c4gtr84g8rt4gdsdf@cluster0.ve1cs2w.mongodb.net/?retryWrites=true&w=majority')
         app.listen(PORT, () => console.log(`server started on port ${PORT}`))
 
