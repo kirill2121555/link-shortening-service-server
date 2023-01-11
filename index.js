@@ -12,7 +12,7 @@ const app=express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: 'https://linkshortservise.herokuapp.com' }));
+app.use(cors({ credentials: true, origin: 'https://link-shortening-service-front.vercel.app' }));
 app.use('/',router)
  
 const start = async () => {
