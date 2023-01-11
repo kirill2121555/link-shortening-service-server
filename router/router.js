@@ -7,6 +7,4 @@ router.get('/link/:link', controller.redirect)
 router.post('/createcastomlink', controller.createcastomlink)
 router.post('/linkstatistics', controller.statistics)
 
-//router.get('/code', controller.code)
-
 module.exports=router
